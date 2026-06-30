@@ -14,10 +14,13 @@ export async function GET() {
     const results = await prisma.result.findMany();
 
     // mapping manual (JOIN)
-    const data = consultations.map((c) => {
+    const data = consultations.map((c: (typeof consultations)[number]) => {
       const hasil = results
-        .filter((r) => r.consultationId === c.id)
-        .sort((a, b) => b.total - a.total);
+        .filter((r: (typeof results)[number]) => r.consultationId === c.id)
+        .sort(
+          (a: (typeof results)[number], b: (typeof results)[number]) =>
+            b.total - a.total
+        );
 
       return {
         id: c.id,
