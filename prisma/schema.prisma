@@ -80,9 +80,3 @@ model Result {
   consultation Consultation @relation(fields: [consultationId], references: [id], onDelete: Cascade)
   jurusan      Jurusan      @relation(fields: [jurusanId], references: [id], onDelete: Cascade)
 }
-
-model Result {
-  consultation   Consultation @relation(fields: [consultationId], references: [id])
-  consultationId String
-  // field lainnya...
-}
