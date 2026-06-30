@@ -1,0 +1,88 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  password  String
+  role      String   @default("SISWA")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  consultations Consultation[]
+}
+
+model Gejala {
+  id   Int    @id @default(autoincrement())
+  kode String
+  nama String
+
+  rules   Rule[]
+  answers Answer[]
+}
+
+model Jurusan {
+  id        Int     @id @default(autoincrement())
+  kode      String
+  nama      String
+  deskripsi String
+  aktif     Boolean @default(true)
+
+  rules   Rule[]
+  results Result[]
+}
+
+model Rule {
+  id        Int @id @default(autoincrement())
+  gejalaId  Int
+  jurusanId Int
+
+  gejala  Gejala  @relation(fields: [gejalaId], references: [id], onDelete: Cascade)
+  jurusan Jurusan @relation(fields: [jurusanId], references: [id], onDelete: Cascade)
+
+  @@unique([gejalaId, jurusanId])
+}
+
+model Consultation {
+  id        String   @id @default(cuid())
+  userId    String
+  createdAt DateTime @default(now())
+
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  answers Answer[]
+  results Result[]
+}
+
+model Answer {
+  id             String @id @default(cuid())
+  consultationId String
+  gejalaId       Int
+
+  consultation Consultation @relation(fields: [consultationId], references: [id], onDelete: Cascade)
+  gejala       Gejala       @relation(fields: [gejalaId], references: [id], onDelete: Cascade)
+
+  @@unique([consultationId, gejalaId])
+}
+
+model Result {
+  id             String @id @default(cuid())
+  consultationId String
+  jurusanId      Int
+  total          Int
+
+  consultation Consultation @relation(fields: [consultationId], references: [id], onDelete: Cascade)
+  jurusan      Jurusan      @relation(fields: [jurusanId], references: [id], onDelete: Cascade)
+}
+
+model Result {
+  consultation   Consultation @relation(fields: [consultationId], references: [id])
+  consultationId String
+  // field lainnya...
+}
