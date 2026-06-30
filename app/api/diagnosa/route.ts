@@ -38,24 +38,31 @@ export async function POST(req: Request) {
     // =========================
     // 🔥 FORMAT HASIL
     // =========================
-    let hasilRaw = Object.keys(skor).map((jurusanId) => ({
+    let hasilRaw = Object.keys(skor).map((jurusanId: string) => ({
       jurusanId: Number(jurusanId),
       total: skor[Number(jurusanId)],
     }));
 
     // 🔥 SORT
-    hasilRaw.sort((a, b) => b.total - a.total);
+    hasilRaw.sort(
+      (a: (typeof hasilRaw)[number], b: (typeof hasilRaw)[number]) =>
+        b.total - a.total
+    );
 
     // 🔥 FILTER
-    const hasilFiltered = hasilRaw.filter((h) => h.total > 0);
+    const hasilFiltered = hasilRaw.filter(
+      (h: (typeof hasilRaw)[number]) => h.total > 0
+    );
 
     // =========================
     // 🔥 AMBIL NAMA JURUSAN
     // =========================
     const jurusanList = await prisma.jurusan.findMany();
 
-    const hasilWithNama = hasilRaw.map((h) => {
-      const jurusan = jurusanList.find((j) => j.id === h.jurusanId);
+    const hasilWithNama = hasilRaw.map((h: (typeof hasilRaw)[number]) => {
+      const jurusan = jurusanList.find(
+        (j: (typeof jurusanList)[number]) => j.id === h.jurusanId
+      );
       return {
         ...h,
         nama: jurusan?.nama || "Tidak diketahui",
@@ -84,7 +91,7 @@ export async function POST(req: Request) {
 
       // 3️⃣ Result
       await tx.result.createMany({
-        data: hasilFiltered.map((h) => ({
+        data: hasilFiltered.map((h: (typeof hasilFiltered)[number]) => ({
           consultationId: consult.id,
           jurusanId: h.jurusanId,
           total: h.total,
