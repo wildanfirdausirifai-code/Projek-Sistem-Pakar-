@@ -1,6 +1,7 @@
 export const dynamic = "force-dynamic";
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
+import type { Prisma } from "@prisma/client";
 
 export async function POST(req: Request) {
   try {
@@ -72,7 +73,7 @@ export async function POST(req: Request) {
     // =========================
     // 🔥 SIMPAN DATABASE (TRANSACTION)
     // =========================
-    const consultation = await prisma.$transaction(async (tx) => {
+    const consultation = await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
 
       // 1️⃣ Consultation
       const consult = await tx.consultation.create({
