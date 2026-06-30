@@ -1,5 +1,6 @@
 "use client";
 
+import { Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 
 type Hasil = {
@@ -8,7 +9,7 @@ type Hasil = {
   total: number;
 };
 
-export default function HasilPage() {
+function HasilContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -110,5 +111,19 @@ export default function HasilPage() {
 
       </div>
     </div>
+  );
+}
+
+export default function HasilPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen flex items-center justify-center bg-[var(--bg)]">
+          <p className="text-[var(--text-muted)]">Memuat hasil...</p>
+        </div>
+      }
+    >
+      <HasilContent />
+    </Suspense>
   );
 }

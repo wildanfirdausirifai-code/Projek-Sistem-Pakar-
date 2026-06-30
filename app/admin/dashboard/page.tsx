@@ -83,7 +83,7 @@ export default async function DashboardAdminPage() {
         <div className="bg-white/70 backdrop-blur-md p-6 rounded-2xl shadow-xl border border-gray-200">
           <h2 className="text-lg font-bold text-gray-800 mb-4">🏆 Ranking Jurusan</h2>
           <div className="flex flex-col gap-3">
-            {ranking.map((item, index) => {
+            {ranking.map((item: (typeof ranking)[number], index: number) => {
               const nama = getNamaJurusan(item.jurusanId);
               const skor = item._sum.total || 0;
               const maxSkor = ranking[0]._sum.total || 1;
