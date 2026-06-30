@@ -31,7 +31,7 @@ export async function POST(req: Request) {
     // =========================
     const skor: Record<number, number> = {};
 
-    rules.forEach((r) => {
+    rules.forEach((r: (typeof rules)[number]) => {
       skor[r.jurusanId] = (skor[r.jurusanId] || 0) + 1;
     });
 
