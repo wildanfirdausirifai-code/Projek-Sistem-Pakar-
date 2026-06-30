@@ -118,7 +118,7 @@ export default async function DashboardAdminPage() {
           <p className="text-gray-500">Belum ada aktivitas</p>
         ) : (
           <ul className="space-y-4">
-            {recentKonsultasi.map((item) => (
+            {recentKonsultasi.map((item: (typeof recentKonsultasi)[number]) => (
               <li key={item.id} className="flex justify-between items-center p-4 rounded-xl bg-white shadow-sm hover:shadow-md transition">
                 <div>
                   <p className="font-semibold text-gray-800">{item.user?.name || "Guest"}</p>
